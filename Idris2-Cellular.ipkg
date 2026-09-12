@@ -1,0 +1,15 @@
+package Idris2-Cellular
+version = 0.1.0
+authors = "Justin Kelly"
+brief   = "Layer 5 Spatial Neighborhood Comonads & Cellular Automata Subsystem."
+
+depends = base
+        , Idris2-Multiset-Core
+        , Idris2-Multiset-Transform
+        , Idris2-Geometry
+        , Idris2-Topology
+
+sourcedir = "src"
+
+modules = Math.Cellular.Comonad
+        , Math.Cellular.Automata
