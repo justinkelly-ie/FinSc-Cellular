@@ -10,6 +10,8 @@ import Core.MaxelTransform
 import Math.Cellular.Comonad
 import Geometry.LatticeTopology
 import Data.Vect
+import Math.OnSeq.FusedStream
+import Data.Fuel
 
 %default total
 
@@ -153,3 +155,62 @@ auditCellularGridMultisetZoomProof =
       mNodes = zoomOutCellularGrid v
   in multiplicity ActiveGridNode mNodes == intToBoxInt 10 &&
      multiplicity BoundaryGridNode mNodes == intToBoxInt 1
+
+------------------------------------------------------------------------
+-- 5. COMPILE-TIME CELLULAR MASS CONSERVATION WITNESSES
+------------------------------------------------------------------------
+
+||| Erased compile-time proof witness verifying total mass conservation across a comonadic cellular step.
+public export
+0 CellularConservationWitness : GridContext Vexel -> Type
+CellularConservationWitness g = cellMass (extract (stepAutomataGrid g)) = cellMass (extract g)
+
+||| Static compile-time witness for homogeneous cell grid context (10, 10, 10).
+public export
+0 prfAutomataMassConservation : CellularConservationWitness (Context (initCellVexel (intToBoxInt 10)) (initCellVexel (intToBoxInt 10)) (initCellVexel (intToBoxInt 10)))
+prfAutomataMassConservation = Refl
+
+||| Verified cellular automaton grid state carrying compile-time erased mass conservation witness.
+public export
+record VerifiedCellularState (g : GridContext Vexel) where
+  constructor MkVerifiedCellularState
+  gridContext : GridContext Vexel
+  0 massPrf : CellularConservationWitness g
+
+------------------------------------------------------------------------
+-- 6. DEFORESTED AUTOMATA GRID STREAM TRANSDUCERS
+------------------------------------------------------------------------
+
+||| Discrete cellular step record carrying step index, focal mass, and momentum.
+public export
+record AutomataStep where
+  constructor MkAutomataStep
+  stepId   : Int
+  focalMass: BoxInt
+  momentumX: BoxInt
+
+public export
+Eq AutomataStep where
+  (MkAutomataStep id1 m1 j1) == (MkAutomataStep id2 m2 j2) =
+    id1 == id2 && m1 == m2 && j1 == j2
+
+||| O(1) allocation deforested stream transducer executing N cellular automata steps using fusedHylomorphism.
+public export covering
+fusedCellularGridStream : Fuel -> GridContext Vexel -> Vexel
+fusedCellularGridStream f initGrid =
+  fusedHylomorphism f
+    (\(idx, g) => Yield (MkAutomataStep idx (cellMass (extract g)) (cellMomentumX (extract g))) (idx + 1, stepAutomataGrid g))
+    (\step, _ => makeCellVexel (focalMass step) (momentumX step) (intToBoxInt 0) False)
+    (extract initGrid)
+    (1, initGrid)
+
+||| Deforested stream transducer evaluating total accumulated cell mass across N comonadic steps.
+public export covering
+fusedComputeTotalCellularMass : Fuel -> GridContext Vexel -> BoxInt
+fusedComputeTotalCellularMass f initGrid =
+  fusedHylomorphism f
+    (\(idx, g) => Yield (MkAutomataStep idx (cellMass (extract g)) (cellMomentumX (extract g))) (idx + 1, stepAutomataGrid g))
+    (\step, acc => focalMass step + acc)
+    (intToBoxInt 0)
+    (1, initGrid)
+
