@@ -5,6 +5,7 @@ import Core.UnixelFraction
 import Core.Goh
 import Geometry.Applicative
 import Geometry.MetricalBounds
+import Core.Category.Adjunction
 
 %default total
 
@@ -44,6 +45,11 @@ interface Functor w => CellularComonad (0 w : Type -> Type) where
   
   ||| Maps a local neighborhood physics rule across the entire universe manifold
   extend : (w a -> b) -> w a -> w b
+
+||| Category-Theoretic Comonad generation: An Adjunction (L ⊣ R) generates a Comonad W = L . R
+public export
+adjunctionToComonad : MultisetAdjunction l r -> l a -> l a
+adjunctionToComonad adj x = leftAdjoint @{adj} (rightAdjoint @{adj} x)
 
 public export
 implementation CellularComonad GridContext where
