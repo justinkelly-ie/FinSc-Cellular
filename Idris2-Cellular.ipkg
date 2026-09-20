@@ -6,6 +6,7 @@ brief   = "Layer 5 Spatial Neighborhood Comonads & Cellular Automata Subsystem."
 depends = Idris2-Geometry, Idris2-Multiset-Core, Idris2-Multiset-Transform, Idris2-Topology, base, linear
 sourcedir = "src"
 
-modules = Math.Cellular.Automata,
+modules = Cellular,
+          Math.Cellular.Automata,
           Math.Cellular.Comonad
 

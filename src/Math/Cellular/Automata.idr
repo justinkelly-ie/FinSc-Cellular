@@ -5,7 +5,7 @@ import Core.UnixelFraction
 import Core.VexelMaxel
 import Core.Multiset
 import Math.Multiset
-import Core.TransformMultiset
+import Core.MaxelTransform
 
 import Math.Cellular.Comonad
 import Geometry.LatticeTopology
@@ -78,7 +78,7 @@ stepAutomataGrid : GridContext Vexel -> GridContext Vexel
 stepAutomataGrid grid = extend stepCellAutomaton grid
 
 ||| Explicit spatial stencil transform mapping a 3-element neighborhood stencil vector [left, center, right]
-||| to a target focal Vexel multiset using Core.TransformMultiset.stencilTransform.
+||| to a target focal Vexel multiset using Core.MaxelTransform.stencilTransform.
 public export
 cellularDiffusionStencilTransform : (v1, v2, v3 : Vexel) -> MaxelTransform (Vect 3 Vexel) Vexel
 cellularDiffusionStencilTransform v1 v2 v3 =
