@@ -1,11 +1,11 @@
-# Idris2-Cellular
+# FinSc-Cellular
 
 [![Idris 2 Verification](https://img.shields.io/badge/Idris_2-0.8.0-blue.svg)](https://www.idris-lang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **Layer 5 Comonadic Cellular Automata Physics & Local Neighborhood Grids for Idris 2**
 
-`Idris2-Cellular` forms **Layer 5** of the 10-layer constructive non-linear multiset science framework. It formalizes spatial neighborhood comonads (`Comonad`: `extract`, `duplicate`, `extend`), comonadic cellular grid structures (`CellularGrid a`), localized Weyl grid updates, boundary dissipation rules, and collision detection over discrete cellular networks without global state mutation.
+`FinSc-Cellular` forms **Layer 5** of the 10-layer constructive non-linear multiset science framework. It formalizes spatial neighborhood comonads (`Comonad`: `extract`, `duplicate`, `extend`), comonadic cellular grid structures (`CellularGrid a`), localized Weyl grid updates, boundary dissipation rules, and collision detection over discrete cellular networks without global state mutation.
 
 ---
 
@@ -24,8 +24,8 @@
 ## 🚀 Building & Installing
 
 ```bash
-idris2 --build Idris2-Cellular.ipkg
-idris2 --install Idris2-Cellular.ipkg
+idris2 --build FinSc-Cellular.ipkg
+idris2 --install FinSc-Cellular.ipkg
 ```
 
 ---
